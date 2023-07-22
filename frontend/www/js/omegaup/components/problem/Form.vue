@@ -43,7 +43,7 @@
                     required
                     name="title"
                     type="text"
-                    class="form-control"
+                    class="form-control introjstitle"
                     :class="{ 'is-invalid': errors.includes('title') }"
                     @blur="onGenerateAlias"
                   />
@@ -56,7 +56,7 @@
                     required
                     name="problem_alias"
                     type="text"
-                    class="form-control"
+                    class="form-control introjsalias"
                     :class="{
                       'is-invalid': errors.includes('problem_alias'),
                     }"
@@ -72,7 +72,7 @@
                     required
                     name="source"
                     type="text"
-                    class="form-control"
+                    class="form-control introjssource"
                     :class="{ 'is-invalid': errors.includes('source') }"
                   />
                 </div>
@@ -84,7 +84,7 @@
                     :required="!isUpdate"
                     name="problem_contents"
                     type="file"
-                    class="form-control"
+                    class="form-control introjsfile"
                     :class="{
                       'is-invalid': errors.includes('problem_contents'),
                     }"
@@ -451,6 +451,8 @@ import problem_Tags from './Tags.vue';
 import T from '../../lang';
 import latinize from 'latinize';
 import { types } from '../../api_types';
+import 'intro.js/introjs.css';
+import introJs from 'intro.js'
 
 @Component({
   components: {
@@ -463,6 +465,7 @@ export default class ProblemForm extends Vue {
   @Prop({ default: () => [] }) errors!: string[];
   @Prop({ default: false }) isUpdate!: boolean;
   @Prop({ default: 0 }) originalVisibility!: number;
+  @Prop() hasVisitedSection!: string;
 
   @Ref('basic-info') basicInfoRef!: HTMLDivElement;
   @Ref('tags') tagsRef!: HTMLDivElement;
@@ -658,7 +661,46 @@ export default class ProblemForm extends Vue {
     }
     this.$emit('alias-changed', newValue);
   }
-}
+
+  mounted() {
+    const title = T.createAProblemInteractiveGuideTitle;
+
+    if (this.hasVisitedSection !== 'true') {
+      introJs()
+        .setOptions({
+          nextLabel: T.interactiveGuideNextButton,
+          prevLabel: T.interactiveGuidePreviousButton,
+          doneLabel: T.interactiveGuideDoneButton,
+          steps: [
+            {
+              title,
+              intro: T.createAProblemInteractiveGuideWelcome,
+            },
+            {
+              element: document.querySelector('.introjsusername'),
+              title,
+              intro: T.createAProblemInteractiveGuideProblemTitle,
+            },
+            {
+              element: document.querySelector('.introjsemail'),
+              title,
+              intro: T.createAProblemInteractiveGuideAlias,
+            },
+            {
+              element: document.querySelector('.introjspassword'),
+              title,
+              intro: T.createAProblemInteractiveSource,
+            },
+            {
+              element: document.querySelector('.introjsconfirmpassword'),
+              title,
+              intro: T.createAProblemInteractiveGuideFile,
+            }
+          ],
+        })
+        .start();
+    }
+}}
 </script>
 
 <style>
