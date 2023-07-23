@@ -677,22 +677,22 @@ export default class ProblemForm extends Vue {
               intro: T.createAProblemInteractiveGuideWelcome,
             },
             {
-              element: document.querySelector('.introjsusername'),
+              element: document.querySelector('.introjstitle'),
               title,
               intro: T.createAProblemInteractiveGuideProblemTitle,
             },
             {
-              element: document.querySelector('.introjsemail'),
+              element: document.querySelector('.introjsalias'),
               title,
               intro: T.createAProblemInteractiveGuideAlias,
             },
             {
-              element: document.querySelector('.introjspassword'),
+              element: document.querySelector('.introjssource'),
               title,
               intro: T.createAProblemInteractiveSource,
             },
             {
-              element: document.querySelector('.introjsconfirmpassword'),
+              element: document.querySelector('.introjsfile'),
               title,
               intro: T.createAProblemInteractiveGuideFile,
             }
@@ -708,4 +708,14 @@ export default class ProblemForm extends Vue {
   padding: 0;
   width: 100%;
 }
+
+.introjs-button.introjs-prevbutton, .introjs-button.introjs-nextbutton {
+  background-color: var(--btn-intro-js-background-color);
+  border-color: var(--btn-intro-js-border-color);
+  color: var(--btn-intro-js-font-color);
+}
+.introjs-skipbutton {
+  color: var(--btn-intro-js-font-color)!important;
+}
+
 </style>
